@@ -1,0 +1,22 @@
+{
+  "name": "node-x10-comm",
+  "version": "1.0.0",
+  "description": "Communicate with x10 modules via a CM17A interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teledemic/node-x10-comm.git"
+  },
+  "author": "Carl Irving",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teledemic/node-x10-comm/issues"
+  },
+  "homepage": "https://github.com/teledemic/node-x10-comm#readme",
+  "dependencies": {
+    "serialport": "^2.0.5"
+  }
+}
