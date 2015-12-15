@@ -42,7 +42,7 @@ var MODULES = [
 	[1,0,0, 0,1,0,1,1,0,0,0], //16
 ];
 
-exports = {
+module.exports = {
 	listPorts: function(callback, errcallback) {
 		serialport.list(function(err, ports) {
 			if (err) {
