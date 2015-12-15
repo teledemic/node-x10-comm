@@ -61,7 +61,7 @@ module.exports = {
 	},
 	device: function(comName) {
 		var dev = {
-			serialport: new serialport.SerialPort(comName, false),
+			serialport: new serialport.SerialPort(comName, {baudrate: 9600}, false),
 			tick: function(bitqueue, callback, errcallback) {
 				if (bitqueue.length > 0) {
 					var lines;
