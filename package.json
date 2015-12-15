@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/teledemic/node-x10-comm.git"
   },
-  "author": "Carl Irving",
+  "author": "Carl Irving <carl@teledemic.com> (http://teledemic.com)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/teledemic/node-x10-comm/issues"
