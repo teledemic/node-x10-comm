@@ -1,7 +1,3 @@
-# node-x10-comm
-Communicate with X10 modules via a CM17A FireCracker interface
-## Usage
-```js
 var x10 = require('node-x10-comm');
 var comm_name = "COM3";
 var house_code = 2; //C
@@ -24,4 +20,3 @@ device.open(comm_name, function() {
 }, function(err) {
 	console.log(err);
 });
-```

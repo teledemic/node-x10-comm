@@ -59,9 +59,9 @@ module.exports = {
 			}
 		});
 	},
-	device: function(comName) {
+	device: function() {
 		var dev = {
-			serialport: new serialport.SerialPort(comName, {baudrate: 9600}, false),
+			serialport: null,
 			tick: function(bitqueue, callback, errcallback) {
 				if (bitqueue.length > 0) {
 					var lines;
@@ -91,15 +91,22 @@ module.exports = {
 					}
 				});
 			},
-			open: function(callback, errcallback) {
-				dev.serialport.open(function(err) {
-					if (err) {
-						errcallback(err);
-					} else {
-						//Give the firecracker 1/2 sec to warm up
-						setTimeout(callback, DEVICE_BOOT_TIME_MS);
-					}
-				});
+			open: function(comName, callback, errcallback) {
+				if (dev.serialport) {
+					dev.serialport.close(function() {
+						dev.serialport = null;
+						dev.open(comName, callback, errcallback);
+					});
+				} else {
+					dev.serialport = new serialport.SerialPort(comName, {baudrate: 9600}, true, function(err) {
+						if (err) {
+							errcallback(err);
+						} else {
+							//Give the firecracker 1/2 sec to warm up
+							setTimeout(callback, DEVICE_BOOT_TIME_MS);
+						}
+					});
+				}
 			},
 			sendCommand: function(house, module, onoff, callback, errcallback) {
 				var command = HOUSES[house].concat(MODULES[module]);
