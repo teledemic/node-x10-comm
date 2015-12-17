@@ -1,6 +1,6 @@
 {
   "name": "node-x10-comm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Communicate with x10 modules via a CM17A interface",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/teledemic/node-x10-comm.git"
   },
+  "keywords": [
+    "x10",
+    "automation",
+    "firecracker",
+    "cm17a"
+  ],
   "author": "Carl Irving <carl@teledemic.com> (http://teledemic.com)",
   "license": "ISC",
   "bugs": {
