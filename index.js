@@ -109,10 +109,18 @@ module.exports = {
 				}
 			},
 			sendCommand: function(house, module, onoff, callback, errcallback) {
-				var command = HOUSES[house].concat(MODULES[module]);
-				if (!onoff) command[10] = 1;
-				var bits = HEADER.concat(command).concat(FOOTER);
-				dev.tick(bits, callback, errcallback);
+				if (HOUSES[house]) {
+					if (MODULES[module]) {
+						var command = HOUSES[house].concat(MODULES[module]);
+						if (!onoff) command[10] = 1;
+						var bits = HEADER.concat(command).concat(FOOTER);
+						dev.tick(bits, callback, errcallback);
+					} else {
+						errcallback("Invalid module");
+					}
+				} else {
+					errcallback("Invalid house");
+				}
 			}
 		};
 		return dev;
