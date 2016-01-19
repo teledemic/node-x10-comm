@@ -92,12 +92,7 @@ module.exports = {
 				});
 			},
 			open: function(comName, callback, errcallback) {
-				if (dev.serialport) {
-					dev.serialport.close(function() {
-						dev.serialport = null;
-						dev.open(comName, callback, errcallback);
-					});
-				} else {
+				dev.close(function() {
 					dev.serialport = new serialport.SerialPort(comName, {baudrate: 9600}, true, function(err) {
 						if (err) {
 							errcallback(err);
@@ -106,6 +101,20 @@ module.exports = {
 							setTimeout(callback, DEVICE_BOOT_TIME_MS);
 						}
 					});
+				}, errcallback);
+			},
+			close: function(callback, errcallback) {
+				if (dev.serialport) {
+					dev.serialport.close(function(err) {
+						if (!err) {
+							dev.serialport = null;
+							callback();
+						} else {
+							errcallback(err);
+						}
+					});
+				} else {
+					callback();
 				}
 			},
 			sendCommand: function(house, module, onoff, callback, errcallback) {
