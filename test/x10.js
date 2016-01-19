@@ -9,6 +9,7 @@ describe("x10", function () {
 		it("should return an array of ports", function (done) {
 			this.slow(300);
 			x10.listPorts(function(ports) {
+				console.log(ports);
 				expect(ports).to.be.an("array");
 				if (ports.length > 0) {
 					expect(ports[0]).to.have.property("comName")
