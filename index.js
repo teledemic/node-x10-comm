@@ -43,13 +43,13 @@ var MODULES = [
 ];
 
 module.exports = {
-	listPorts: function(callback, errcallback) {
-		serialport.list(function(err, ports) {
+	listPorts: function (callback, errcallback) {
+		serialport.list(function (err, ports) {
 			if (err) {
 				errcallback(err);
 			} else {
 				var ret = [];
-				ports.forEach(function(port) {
+				ports.forEach(function (port) {
 					ret.push({
 						comName: port.comName,
 						manufacturer: port.manufacturer,
@@ -59,10 +59,10 @@ module.exports = {
 			}
 		});
 	},
-	device: function() {
+	device: function () {
 		var dev = {
 			serialport: null,
-			tick: function(bitqueue, callback, errcallback) {
+			tick: function (bitqueue, callback, errcallback) {
 				if (bitqueue.length > 0) {
 					var lines;
 					if (bitqueue.shift() === 1) {
@@ -70,7 +70,7 @@ module.exports = {
 					} else {
 						lines = {rts: false, dtr: true};
 					}
-					dev.serialport.set(lines, function(err, result) {
+					dev.serialport.set(lines, function (err, result) {
 						if (!err) {
 							setTimeout(dev.tock, BIT_LENGTH_MS, bitqueue, callback, errcallback);
 						} else {
@@ -82,8 +82,8 @@ module.exports = {
 					callback();
 				}
 			},
-			tock: function(bitqueue, callback, errcallback) {
-				dev.serialport.set({rts: true, dtr: true}, function(err, result) {
+			tock: function (bitqueue, callback, errcallback) {
+				dev.serialport.set({rts: true, dtr: true}, function (err, result) {
 					if (!err) {
 						setTimeout(dev.tick, BIT_LENGTH_MS, bitqueue, callback, errcallback);
 					} else {
@@ -91,9 +91,9 @@ module.exports = {
 					}
 				});
 			},
-			open: function(comName, callback, errcallback) {
-				dev.close(function() {
-					dev.serialport = new serialport.SerialPort(comName, {baudrate: 9600}, true, function(err) {
+			open: function (comName, callback, errcallback) {
+				dev.close(function () {
+					dev.serialport = new serialport.SerialPort(comName, {baudrate: 9600}, true, function (err) {
 						if (err) {
 							errcallback(err);
 						} else {
@@ -103,9 +103,9 @@ module.exports = {
 					});
 				}, errcallback);
 			},
-			close: function(callback, errcallback) {
+			close: function (callback, errcallback) {
 				if (dev.serialport) {
-					dev.serialport.close(function(err) {
+					dev.serialport.close(function (err) {
 						if (!err) {
 							dev.serialport = null;
 							callback();
@@ -117,7 +117,7 @@ module.exports = {
 					callback();
 				}
 			},
-			sendCommand: function(house, module, onoff, callback, errcallback) {
+			sendCommand: function (house, module, onoff, callback, errcallback) {
 				if (HOUSES[house]) {
 					if (MODULES[module]) {
 						var command = HOUSES[house].concat(MODULES[module]);
