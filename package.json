@@ -26,9 +26,6 @@
     "serialport": "4.0.6"
   },
   "devDependencies": {
-    "chai": "*",
-    "mocha": "*",
-    "mockery": "*"
   },
   "engines": {
     "node": ">= 0.10.0"
