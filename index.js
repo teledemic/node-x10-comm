@@ -43,13 +43,13 @@ var MODULES = [
 ];
 
 module.exports = {
-	listPorts: function(callback, errcallback) {
-		serialport.list(function(err, ports) {
+	listPorts: function (callback, errcallback) {
+		serialport.list(function (err, ports) {
 			if (err) {
 				errcallback(err);
 			} else {
 				var ret = [];
-				ports.forEach(function(port) {
+				ports.forEach(function (port) {
 					ret.push({
 						comName: port.comName,
 						manufacturer: port.manufacturer,
@@ -59,10 +59,10 @@ module.exports = {
 			}
 		});
 	},
-	device: function() {
+	device: function () {
 		var dev = {
 			serialport: null,
-			tick: function(bitqueue, callback, errcallback) {
+			tick: function (bitqueue, callback, errcallback) {
 				if (bitqueue.length > 0) {
 					var lines;
 					if (bitqueue.shift() === 1) {
@@ -70,7 +70,7 @@ module.exports = {
 					} else {
 						lines = {rts: false, dtr: true};
 					}
-					dev.serialport.set(lines, function(err, result) {
+					dev.serialport.set(lines, function (err, result) {
 						if (!err) {
 							setTimeout(dev.tock, BIT_LENGTH_MS, bitqueue, callback, errcallback);
 						} else {
@@ -82,8 +82,8 @@ module.exports = {
 					callback();
 				}
 			},
-			tock: function(bitqueue, callback, errcallback) {
-				dev.serialport.set({rts: true, dtr: true}, function(err, result) {
+			tock: function (bitqueue, callback, errcallback) {
+				dev.serialport.set({rts: true, dtr: true}, function (err, result) {
 					if (!err) {
 						setTimeout(dev.tick, BIT_LENGTH_MS, bitqueue, callback, errcallback);
 					} else {
@@ -91,14 +91,9 @@ module.exports = {
 					}
 				});
 			},
-			open: function(comName, callback, errcallback) {
-				if (dev.serialport) {
-					dev.serialport.close(function() {
-						dev.serialport = null;
-						dev.open(comName, callback, errcallback);
-					});
-				} else {
-					dev.serialport = new serialport(comName, {baudrate: 9600}, function(err) {
+			open: function (comName, callback, errcallback) {
+				dev.close(function () {
+					dev.serialport = new serialport(comName, {baudrate: 9600}, function (err) {
 						if (err) {
 							errcallback(err);
 						} else {
@@ -106,13 +101,35 @@ module.exports = {
 							setTimeout(callback, DEVICE_BOOT_TIME_MS);
 						}
 					});
+				}, errcallback);
+			},
+			close: function (callback, errcallback) {
+				if (dev.serialport) {
+					dev.serialport.close(function (err) {
+						if (!err) {
+							dev.serialport = null;
+							callback();
+						} else {
+							errcallback(err);
+						}
+					});
+				} else {
+					callback();
 				}
 			},
-			sendCommand: function(house, module, onoff, callback, errcallback) {
-				var command = HOUSES[house].concat(MODULES[module]);
-				if (!onoff) command[10] = 1;
-				var bits = HEADER.concat(command).concat(FOOTER);
-				dev.tick(bits, callback, errcallback);
+			sendCommand: function (house, module, onoff, callback, errcallback) {
+				if (HOUSES[house]) {
+					if (MODULES[module]) {
+						var command = HOUSES[house].concat(MODULES[module]);
+						if (!onoff) command[10] = 1;
+						var bits = HEADER.concat(command).concat(FOOTER);
+						dev.tick(bits, callback, errcallback);
+					} else {
+						errcallback("Invalid module");
+					}
+				} else {
+					errcallback("Invalid house");
+				}
 			}
 		};
 		return dev;
