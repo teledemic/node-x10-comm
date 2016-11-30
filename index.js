@@ -98,7 +98,7 @@ module.exports = {
 						dev.open(comName, callback, errcallback);
 					});
 				} else {
-					dev.serialport = new serialport.SerialPort(comName, {baudrate: 9600}, true, function(err) {
+					dev.serialport = new serialport(comName, {baudrate: 9600}, function(err) {
 						if (err) {
 							errcallback(err);
 						} else {

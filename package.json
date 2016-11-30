@@ -1,6 +1,6 @@
 {
   "name": "node-x10-comm",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Communicate with x10 modules via a CM17A interface",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/teledemic/node-x10-comm#readme",
   "dependencies": {
-    "serialport": "^2.0.5"
+    "serialport": "4.0.6"
   }
 }
