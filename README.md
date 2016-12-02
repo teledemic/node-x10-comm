@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/teledemic/node-x10-comm.svg?branch=master)](https://travis-ci.org/teledemic/node-x10-comm)
 [![Dependency Status](https://david-dm.org/teledemic/node-x10-comm.svg)](https://david-dm.org/teledemic/node-x10-comm)
 
 # node-x10-comm
