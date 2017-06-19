@@ -1,4 +1,5 @@
 var serialport = require("serialport");
+var promisify = require("./promisify");
 
 var BIT_LENGTH_MS = 1;
 var DEVICE_BOOT_TIME_MS = 500;
@@ -43,7 +44,7 @@ var MODULES = [
 ];
 
 module.exports = {
-	listPorts: function (callback, errcallback) {
+	listPorts: promisify(function (callback, errcallback) {
 		serialport.list(function (err, ports) {
 			if (err) {
 				errcallback(err);
@@ -58,7 +59,7 @@ module.exports = {
 				callback(ret);
 			}
 		});
-	},
+	}),
 	device: function () {
 		var dev = {
 			serialport: null,
@@ -91,7 +92,7 @@ module.exports = {
 					}
 				});
 			},
-			open: function (comName, callback, errcallback) {
+			open: promisify(function (comName, callback, errcallback) {
 				dev.close(function () {
 					dev.serialport = new serialport(comName, {baudrate: 9600}, function (err) {
 						if (err) {
@@ -102,8 +103,8 @@ module.exports = {
 						}
 					});
 				}, errcallback);
-			},
-			close: function (callback, errcallback) {
+			}),
+			close: promisify(function (callback, errcallback) {
 				if (dev.serialport) {
 					dev.serialport.close(function (err) {
 						if (!err) {
@@ -116,8 +117,8 @@ module.exports = {
 				} else {
 					callback();
 				}
-			},
-			sendCommand: function (house, module, onoff, callback, errcallback) {
+			}),
+			sendCommand: promisify(function (house, module, onoff, callback, errcallback) {
 				if (HOUSES[house]) {
 					if (MODULES[module]) {
 						var command = HOUSES[house].concat(MODULES[module]);
@@ -130,7 +131,7 @@ module.exports = {
 				} else {
 					errcallback("Invalid house");
 				}
-			}
+			})
 		};
 		return dev;
 	},
