@@ -27,3 +27,9 @@ device.open(comm_name, function () {
   console.log(err);
 });
 ```
+
+Or use promises or async/await:
+```js
+await device.open(comm_name);
+await device.sendCommand(2, 0);
+```

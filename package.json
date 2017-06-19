@@ -1,6 +1,6 @@
 {
   "name": "node-x10-comm",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Communicate with x10 modules via a CM17A interface",
   "main": "index.js",
   "scripts": {
